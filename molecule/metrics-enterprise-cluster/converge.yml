@@ -2,7 +2,8 @@
 - name: Set up object storage
   hosts: minio
   tasks:
-    - file: path=/data/metrics-enterprise-admin state=directory
+    - name: Create metrics-enterprise-admin bucket
+      file: path=/data/metrics-enterprise-admin state=directory
 
 - name: Converge
   hosts: metrics-enterprise
