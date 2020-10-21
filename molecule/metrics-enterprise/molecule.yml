@@ -1,0 +1,42 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  ansible-lint
+  yamllint .
+platforms:
+  - name: metrics-enterprise-ubuntu-systemd-bionic
+    image: jdbgrafana/ubuntu-systemd:bionic  # 18.04
+    command: /lib/systemd/systemd
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    capabilities:
+      - SYS_ADMIN
+  - name: metrics-enterprise-debian-systemd-buster
+    image: jdbgrafana/debian-systemd:buster  # 10
+    command: /lib/systemd/systemd
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    capabilities:
+      - SYS_ADMIN
+  - name: metrics-enterprise-centos-systemd-8
+    image: jdbgrafana/centos-systemd:8
+    command: /usr/sbin/init
+    privileged: true
+    tmpfs: ['/run', '/run/lock']
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    capabilities:
+      - SYS_ADMIN
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      python3:
+        ansible_python_interpreter: /usr/bin/python3
+verifier:
+  name: ansible

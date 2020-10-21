@@ -15,4 +15,10 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - bionic
+    - name: Debian
+      versions:
+        - buster
+    - name: Centos
+      versions:
+        - 8
 dependencies: []

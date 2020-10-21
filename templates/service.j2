@@ -1,0 +1,14 @@
+[Unit]
+Description={% if enterprise %} Grafana Metrics Enterprise {% else %} Cortex {% endif %}
+After=network.target
+
+[Service]
+User={{ user }}
+Group={{ group }}
+WorkingDirectory={{ data_dir }}
+ExecStart={{ bin_dir }}/{{ bin_name }} {{ bin_arguments | join(' ') }}
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

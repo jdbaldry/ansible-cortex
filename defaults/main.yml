@@ -1,2 +1,24 @@
 ---
-# defaults file for ansible-cortex/
+enterprise: false
+
+name: "{% if enterprise -%} metrics-enterprise {%- else -%} cortex {%- endif %}"
+
+bin_local_dir: "/tmp/ansible-cortex"
+bin_name: "{% if enterprise -%} metrics-enterprise {%- else -%} cortex {%- endif %}"
+bin_dir: /usr/local/bin
+config_dir: "/etc/{{ name }}"
+config_file: "{{ name }}.yml"
+config_template: "{{ name }}.yml.j2"
+data_dir: "/var/lib/{{ name }}"
+http_listen_port: 9009
+
+user: "{{ name }}"
+group: "{{ name }}"
+bin_arguments:
+  - "-config.file={{ config_dir }}/{{ config_file }}"
+
+cortex_version: 1.4.0
+cortex_checksum: 15982475d875ca1f7c8b70e7cf48b0c5ad850d7eb73f8789c0a60bf57effac57
+
+metrics_enterprise_version: 1.0.2
+metrics_enterprise_checksum: dceda7c43bcde4b76c5aab9cd9da1db7aa01df5f99dec2bdfcceaf49ecafb708

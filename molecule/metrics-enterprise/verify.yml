@@ -1,0 +1,12 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test server /ready endpoint"
+      uri:
+        url: "http://127.0.0.1:9009/ready"
+        return_content: true
+      register: this

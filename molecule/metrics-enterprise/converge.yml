@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-cortex"
+      include_role:
+        name: "ansible-cortex"
+      vars:
+        enterprise: true
+        metrics_enterprise_cluster_name: test
+        metrics_enterprise_license_file: license.jwt
