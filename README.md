@@ -9,6 +9,7 @@ Deploy [Cortex](https://github.com/cortexproject/cortex) or [Grafana Metrics Ent
 ## Role variables
 
 | Name | Default value | Description |
+| ---- | ------------- | ----------- |
 | enterprise | `false` | Set to `true` to deploy Grafana Metrics Enterprise instead of Cortex. |
 | name | `"{% if enterprise -%} metrics-enterprise {%- else -%} cortex {%- endif %}"` | Name of the service, used to interpolate file names, service names, etc.. `name` is parameterized for use with different targets like `compactor`. |
 | bin\_name | `"{% if enterprise -%} metrics-enterprise {%- else -%} cortex {%- endif %}"` | Name of the binary on the remote system. Parameterized so that multiple services on a single host can use the same binary. |
