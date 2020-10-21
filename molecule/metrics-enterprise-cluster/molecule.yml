@@ -1,0 +1,81 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  ansible-lint
+  yamllint .
+platforms:
+  - name: minio
+    image: minio/minio:RELEASE.2020-10-18T21-54-12Z
+    environment:
+      MINIO_ACCESS_KEY: metrics-enterprise
+      MINIO_SECRET_KEY: supersecret
+    command: server /data
+    published_ports: [9000:9000]
+    docker_networks:
+      - name: metrics-enterprise-cluster
+    networks:
+      - name: metrics-enterprise-cluster
+    groups: ['minio']
+
+  - name: consul
+    image: consul:1.8.4
+    environment:
+    published_ports: [8500:8500]
+    command: agent -server -bootstrap -client 0.0.0.0 -ui
+    docker_networks:
+      - name: metrics-enterprise-cluster
+    networks:
+      - name: metrics-enterprise-cluster
+    groups: ['minio']
+
+  - name: metrics-enterprise-ubuntu-systemd-bionic
+    image: jdbgrafana/ubuntu-systemd:bionic  # 18.04
+    command: /lib/systemd/systemd
+    privileged: true
+    docker_networks:
+      - name: metrics-enterprise-cluster
+    networks:
+      - name: metrics-enterprise-cluster
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    capabilities:
+      - SYS_ADMIN
+    groups: ['metrics-enterprise']
+  - name: metrics-enterprise-debian-systemd-buster
+    image: jdbgrafana/debian-systemd:buster  # 10
+    command: /lib/systemd/systemd
+    docker_networks:
+      - name: metrics-enterprise-cluster
+    networks:
+      - name: metrics-enterprise-cluster
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    capabilities:
+      - SYS_ADMIN
+    groups: ['metrics-enterprise']
+  - name: metrics-enterprise-centos-systemd-8
+    image: jdbgrafana/centos-systemd:8
+    command: /usr/sbin/init
+    docker_networks:
+      - name: metrics-enterprise-cluster
+    networks:
+      - name: metrics-enterprise-cluster
+    privileged: true
+    tmpfs: ['/run', '/run/lock']
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    capabilities:
+      - SYS_ADMIN
+    groups: ['metrics-enterprise']
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      python3:
+        ansible_python_interpreter: /usr/bin/python3
+verifier:
+  name: ansible
