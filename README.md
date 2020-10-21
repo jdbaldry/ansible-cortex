@@ -1,6 +1,6 @@
 # Ansible Role: cortex
 
-Deploy [Cortex](https://github.com/cortexproject/cortex) or [Grafana Metrics Enterprise](https://grafana.com/products/metrics-enterprise/) (horizontally scalable, highly available, mult-tenant, long term Prometheus) using Ansible.
+Deploy [Cortex](https://github.com/cortexproject/cortex) or [Grafana Metrics Enterprise](https://grafana.com/products/metrics-enterprise/) (horizontally scalable, highly available, multi-tenant, long term Prometheus) using Ansible.
 
 ## Requirements
 
