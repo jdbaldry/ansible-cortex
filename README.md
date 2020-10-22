@@ -1,4 +1,4 @@
-# Ansible Role: cortex
+# ansible-cortex
 
 Deploy [Cortex](https://github.com/cortexproject/cortex) or [Grafana Metrics Enterprise](https://grafana.com/products/metrics-enterprise/) (horizontally scalable, highly available, multi-tenant, long term Prometheus) using Ansible.
 
@@ -32,9 +32,11 @@ Deploy [Cortex](https://github.com/cortexproject/cortex) or [Grafana Metrics Ent
 
 ## Example playbooks
 
-### Single Process Cortex
+> More examples can be found by reviewing the test scenarios in `/molecule`
 
-The following playbook will start a single instance of Cortex running in single process mode with the blocks storage engine configured to use the local filesystem as a store. Cortex servers will not cluster with this configuration.
+### Single process Cortex
+
+Start a single instance of Cortex running in single process mode with the blocks storage engine configured to use the local filesystem as a store. Cortex servers will not cluster with this configuration.
 
 ```yaml
 ---
@@ -42,9 +44,9 @@ The following playbook will start a single instance of Cortex running in single 
   roles: jdbaldry/ansible-cortex
 ```
 
-### Single Process Grafana Metrics Enterprise
+### Single process Grafana Metrics Enterprise
 
-The following playbook will start a single instance of Grafana Metrics Enterprise running in single process mode with the blocks storage engine configured to use the local filesystem as a store.
+Start a single instance of Grafana Metrics Enterprise running in single process mode with the blocks storage engine configured to use the local filesystem as a store.
 Grafana Metrics Enterpise servers will not cluster with this configuration.
 
 ```yaml
