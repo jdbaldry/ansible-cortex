@@ -11,25 +11,29 @@ help: ## Display this help
 help:
 	@awk 'BEGIN {FS = ": ##"; printf "Usage:\n  make <target>\n\nTargets:\n"} /^[a-zA-Z0-9_\.\-\/%]+: ##/ { printf "  %-45s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
-.PHONY: test
-test: ## Run Molecule tests
-test:
+define molecule_cmd
 	docker run --rm -it \
 		-v "$$(pwd)":/tmp/$(basename "$${PWD}"):ro \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-w /tmp/$(basename "$${PWD}") \
 		quay.io/ansible/molecule:3.0.8 \
-		molecule test $(MOLECULE_TEST_ARGS)
+		molecule $(1) $(2)
+endef
+
+.PHONY: test
+test: ## Run Molecule tests
+test:
+	$(call molecule_cmd,test,$(MOLECULE_ARGS))
+
+.PHONY: converge
+converge: ## Run Molecule converge command
+converge:
+	$(call molecule_cmd,converge,$(MOLECULE_ARGS))
 
 .PHONY: lint
 lint: ## Lint ansible files
 lint:
-	docker run --rm -it \
-		-v "$$(pwd)":/tmp/$(basename "$${PWD}"):ro \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		-w /tmp/$(basename "$${PWD}") \
-		quay.io/ansible/molecule:3.0.8 \
-		molecule lint
+	$(call molecule_cmd,lint,$(MOLECULE_ARGS))
 
 .PHONY: build
 build: ## Build all docker images
