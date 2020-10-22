@@ -1,0 +1,15 @@
+---
+- name: Verify
+  hosts: metrics-enterprise
+  gather_facts: false
+  tasks:
+    - name: Test server /ready endpoint
+      uri:
+        url: "http://127.0.0.1:9009/ready"
+
+    - name: Test ingester ring
+      uri:
+        url: "http://127.0.0.1:9009/ingester/ring"
+        return_content: true
+      register: this
+      failed_when: "this.content.count('ACTIVE') != 3"
