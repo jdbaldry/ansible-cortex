@@ -1,5 +1,6 @@
 [Unit]
-Description={% if enterprise %} Grafana Metrics Enterprise {% else %} Cortex {% endif %}
+Description={% if enterprise  -%} Grafana Metrics Enterprise {%- else -%} Cortex {%- endif %}
+
 After=network.target
 
 [Service]
