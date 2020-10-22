@@ -10,5 +10,10 @@ ExecStart={{ bin_dir }}/{{ bin_name }} {{ bin_arguments | join(' ') }}
 Restart=always
 RestartSec=10s
 
+# Allow the server to listen on privileged ports.
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+
 [Install]
 WantedBy=multi-user.target

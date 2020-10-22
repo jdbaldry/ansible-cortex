@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-cortex"
+      include_role:
+        name: "ansible-cortex"
+      vars:
+        http_listen_port: 80
