@@ -12,8 +12,8 @@ config_template: "{{ name }}.yml.j2"
 data_dir: "/var/lib/{{ name }}"
 http_listen_port: 9009
 
-user: "{{ name }}"
-group: "{{ name }}"
+user: "{{ bin_name }}"
+group: "{{ bin_name }}"
 bin_arguments:
   - "-config.file={{ config_dir }}/{{ config_file }}"
 
