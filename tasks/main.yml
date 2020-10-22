@@ -1,13 +1,28 @@
 ---
 - include: preflight.yml
 
-- name: "Create {{ group }} system group"
+- name: "Get status of {{ group }} system group"
+  getent:
+    database: group
+    key: "{{ group }}"
+    fail_key: false
+
+- name: "Create {{ group }} system group if it does not already exist"
   group:
     name: "{{ group }}"
     system: true
     state: present
+  # When using the getent_group dictionary, the group key is defined but is null ('None' in Python) when the group doesn't exist.
+  # 'None' is falsey and all other values are truthy.
+  when: ansible_facts.getent_group[group] is defined and not ansible_facts.getent_group[group]
 
-- name: "Create {{ user }} system user"
+- name: "Get status of {{ user }} system user"
+  getent:
+    database: passwd
+    key: "{{ user }}"
+    fail_key: false
+
+- name: "Create {{ user }} system user if it does not already exist"
   user:
     name: "{{ user }}"
     system: true
@@ -15,6 +30,9 @@
     group: "{{ group }}"
     createhome: false
     home: "{{ data_dir }}"
+  # When using the getent_password dictionary, the user key is defined but is null ('None' in Python) when the user doesn't exist.
+  # 'None' is falsey and all other values are truthy.
+  when: ansible_facts.getent_passwd[user] is defined and not ansible_facts.getent_passwd[user]
 
 - name: "Create {{ data_dir }} directory"
   file:
