@@ -11,31 +11,25 @@ help: ## Display this help
 help:
 	@awk 'BEGIN {FS = ": ##"; printf "Usage:\n  make <target>\n\nTargets:\n"} /^[a-zA-Z0-9_\.\-\/%]+: ##/ { printf "  %-45s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
-venv: ## Create a Python virtualenv
-venv:
-	python -m venv venv
-
-dev: ## Install development dependencies in Python virtualenv
-dev: venv requirements.txt
-	source venv/bin/activate
-	pip install -r requirements.txt
-	touch $@
-
 .PHONY: test
 test: ## Run Molecule tests
-test: dev
-	source venv/bin/activate
-	molecule test --all
-
-requirements.txt: ## Update Python requirements.txt
-requirements.txt: $(wildcard venv/**/*)
-	pip freeze > requirements.txt
+test:
+	docker run --rm -it \
+		-v "$$(pwd)":/tmp/$(basename "$${PWD}"):ro \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		-w /tmp/$(basename "$${PWD}") \
+		quay.io/ansible/molecule:3.0.8 \
+		molecule test
 
 .PHONY: lint
 lint: ## Lint ansible files
-lint: dev
-	source venv/bin/activate
-	molecule lint
+lint:
+	docker run --rm -it \
+		-v "$$(pwd)":/tmp/$(basename "$${PWD}"):ro \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		-w /tmp/$(basename "$${PWD}") \
+		quay.io/ansible/molecule:3.0.8 \
+		molecule lint
 
 .PHONY: build
 build: ## Build all docker images
