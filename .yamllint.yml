@@ -3,8 +3,6 @@ extends: default
 ignore: |
   meta
   venv
-  .travis/
-  .travis.yml
 
 rules:
   braces:
