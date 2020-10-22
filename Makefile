@@ -19,7 +19,7 @@ test:
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-w /tmp/$(basename "$${PWD}") \
 		quay.io/ansible/molecule:3.0.8 \
-		molecule test
+		molecule test $(MOLECULE_TEST_ARGS)
 
 .PHONY: lint
 lint: ## Lint ansible files
