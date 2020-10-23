@@ -6,6 +6,9 @@ After=network.target
 [Service]
 User={{ user }}
 Group={{ group }}
+# Limits should instead be imposed by ulimit.
+LimitNOFILE=infinity
+LimitNOFILESoft=infinity
 WorkingDirectory={{ data_dir }}
 ExecStart={{ bin_dir }}/{{ bin_name }} {{ bin_arguments | join(' ') }}
 Restart=always
