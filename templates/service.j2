@@ -15,6 +15,11 @@ ExecStart={{ bin_dir }}/{{ bin_name }} {{ bin_arguments | join(' ') }}
 Restart=always
 RestartSec=10s
 
+# Give ingesters plenty of time to gracefully leave.
+# TODO: Make TimeoutStopSec configurable.
+#     : In microservices mode, this needs only be set for stateful components.
+TimeoutStopSec=4800
+
 # Allow the server to listen on privileged ports.
 CapabilityBoundingSet=CAP_NET_BIND_SERVICE
 AmbientCapabilities=CAP_NET_BIND_SERVICE
